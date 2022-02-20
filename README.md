@@ -1,4 +1,4 @@
-# parichaya_webapp
+# parichaya_web
 
 A new Flutter project.
 

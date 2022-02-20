@@ -1,6 +1,6 @@
 {
-    "name": "parichaya_webapp",
-    "short_name": "parichaya_webapp",
+    "name": "parichaya_web",
+    "short_name": "parichaya_web",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

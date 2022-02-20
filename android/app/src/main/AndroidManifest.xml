@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.parichaya_webapp">
+    package="com.example.parichaya_web">
    <application
-        android:label="parichaya_webapp"
+        android:label="parichaya_web"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(parichaya_webapp LANGUAGES CXX)
+project(parichaya_web LANGUAGES CXX)
 
-set(BINARY_NAME "parichaya_webapp")
+set(BINARY_NAME "parichaya_web")
 
 cmake_policy(SET CMP0063 NEW)
 
