@@ -1,32 +1,50 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:parichaya_webapp/screens/homepage.dart';
+import 'package:parichaya_webapp/screens/share_link_details.dart';
+import './screens/expired_link.dart';
+import './screens/share_link_details.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() {
-  runApp(const MyApp());
+  setPathUrlStrategy();
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+  Widget build(BuildContext context) => MaterialApp.router(
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
+      );
+
+  final _router = GoRouter(
+    errorBuilder: (context, state) => const ExpiredLinkView(),
+    routes: [
+      GoRoute(
+        path: '/:shareLinkId/:encryptionKey',
+        builder: (context, state) {
+          return ShareLinkDetails(
+            shareLinkId: state.params['shareLinkId']!,
+            encryptionKey: state.params['encryptionKey']!,
+          );
+        },
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+      GoRoute(
+        path: '/',
+        builder: (context, state) {
+          return const HomePage();
+        },
+      ),
+    ],
+  );
 }
 
 class MyHomePage extends StatefulWidget {
