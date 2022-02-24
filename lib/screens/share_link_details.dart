@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import '../screens/expired_link.dart';
 import '../utils/server_url.dart';
@@ -23,7 +25,7 @@ class _ShareLinkDetailsState extends State<ShareLinkDetails> {
   // static const routeName = '/share_link_details';
   // bool _isLoading = true;
   bool _isFetchingDocuments = false;
-  String _fetchingDocumentMessage = 'Loading...';
+  String _fetchingDocumentMessage = '';
   bool isInitialized = false;
   Map shareLinkData = {};
   String formattedExpiryDuration = '';
@@ -37,35 +39,28 @@ class _ShareLinkDetailsState extends State<ShareLinkDetails> {
     setState(() {
       _fetchingDocumentMessage = 'Sending request for your documents...';
     });
-    final response = await http.get(
-      Uri.parse(url),
-    );
-    setState(() {
-      _fetchingDocumentMessage = 'Got your documents. Decrypting...';
-    });
-    if (response.statusCode != 200) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const ExpiredLinkView(),
-      ));
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+      );
+      if (response.statusCode != 200) {
+        // GoRouter.of(context).go('/expired');
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const ExpiredLinkView()));
+      }
       setState(() {
-        _fetchingDocumentMessage = 'Loading...';
+        shareLinkData = json.decode(response.body);
         _isFetchingDocuments = false;
+        final expiryDate = DateTime.parse(shareLinkData['expiry_date']);
+        // final createdOn = DateTime.parse(shareLinkData['created_on']);
+        formattedExpiryDuration = getFormattedExpiry(expiryDate);
+        log(formattedExpiryDuration);
       });
-      return;
+    } catch (e) {
+      // GoRouter.of(context).go('/expired');
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const ExpiredLinkView()));
     }
-    setState(() {
-      _fetchingDocumentMessage = 'Got your documents. Decrypting...';
-    });
-
-    setState(() {
-      shareLinkData = json.decode(response.body);
-      _isFetchingDocuments = false;
-
-      // _isLoading = false;
-    });
-
-    final expiryDate = DateTime.parse(shareLinkData['expiry_date']);
-    formattedExpiryDuration = getFormattedExpiry(expiryDate);
   }
 
   // @override

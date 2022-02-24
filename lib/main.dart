@@ -42,6 +42,12 @@ class MyApp extends StatelessWidget {
           return const HomePage();
         },
       ),
+      GoRoute(
+        path: '/expired',
+        builder: (context, state) {
+          return const ExpiredLinkView();
+        },
+      ),
     ],
   );
 }
