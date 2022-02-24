@@ -1,11 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-
-  static const routeName = '/expired_link';
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +18,19 @@ class HomePage extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.fingerprint,
-                      size: 48,
+                      size: 62,
                       color: Theme.of(context).primaryColor,
                     ),
-                    Text(Uri.base.toString()),
-                    Text(
-                      'Parichaya',
-                      style: Theme.of(context).textTheme.headline1,
+                    Container(
+                      width: 350,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          'Parichaya',
+                          style: Theme.of(context).textTheme.headline1,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                   ],
                 ),
