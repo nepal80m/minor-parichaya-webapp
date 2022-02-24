@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:parichaya_webapp/screens/homepage.dart';
-import 'package:parichaya_webapp/screens/share_link_details.dart';
+import '../screens/homepage.dart';
+import '../screens/share_link_details.dart';
 import './screens/expired_link.dart';
 import './screens/share_link_details.dart';
 import 'package:go_router/go_router.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:parichaya_webapp/screens/expired_link.dart';
+import '../screens/expired_link.dart';
 import '../utils/server_url.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/document_details_tile.dart';
