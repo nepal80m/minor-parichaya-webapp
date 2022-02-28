@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp.router(
+        title: 'Parichaya',
         routeInformationParser: _router.routeInformationParser,
         routerDelegate: _router.routerDelegate,
         debugShowCheckedModeBanner: false,
