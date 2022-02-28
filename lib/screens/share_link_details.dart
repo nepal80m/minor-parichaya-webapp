@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import '../screens/expired_link.dart';
 import '../utils/server_url.dart';
@@ -35,7 +34,7 @@ class _ShareLinkDetailsState extends State<ShareLinkDetails> {
       _isFetchingDocuments = true;
     });
     const baseUrl = baseServerUrl;
-    final url = baseUrl + '${widget.shareLinkId}/${widget.encryptionKey}/';
+    final url = baseUrl + '/${widget.shareLinkId}/${widget.encryptionKey}/';
     setState(() {
       _fetchingDocumentMessage = 'Sending request for your documents...';
     });
@@ -93,109 +92,128 @@ class _ShareLinkDetailsState extends State<ShareLinkDetails> {
                 ],
               ),
             )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 300),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 70),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+          : Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.blue.withOpacity(1),
+                    Colors.blue.withOpacity(0.7),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.topRight,
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(50),
+                  child: Card(
+                    elevation: 15,
+                    shadowColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
                         children: [
-                          Icon(
-                            Icons.fingerprint,
-                            size: 48,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          Container(
-                            width: 350,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                'Parichaya',
-                                style: Theme.of(context).textTheme.headline1,
-                                textAlign: TextAlign.center,
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 50, bottom: 50),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.fingerprint,
+                                  size: 68,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                Text(
+                                  'Parichaya',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline2!
+                                      .copyWith(color: Colors.black),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                           ),
+                          Text(
+                            'We have some files for you.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline2!
+                                .copyWith(color: Colors.black),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            formattedExpiryDuration.isEmpty
+                                ? 'Link Has Expired'
+                                : 'Expires in $formattedExpiryDuration',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(color: Colors.black),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 80,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  launch(
+                                      '$baseServerUrl/${shareLinkData['id']}/images/${widget.encryptionKey}/download/');
+                                },
+                                borderRadius: BorderRadius.circular(15),
+                                splashColor: Colors.amber,
+                                highlightColor: Colors.deepOrange,
+                                child: Container(
+                                  height: 50,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Theme.of(context).primaryColor),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Download All Files',
+                                          softWrap: true,
+                                          overflow: TextOverflow.fade,
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        const Icon(
+                                          Icons.download,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (shareLinkData.isNotEmpty)
+                            SharedDocumentDetailsTiles(
+                              documents: shareLinkData['documents'],
+                              encryptionKey: widget.encryptionKey,
+                            )
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 70,
-                    ),
-                    Text(
-                      'We have some files for you.',
-                      style: Theme.of(context).textTheme.headline2,
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      formattedExpiryDuration.isEmpty
-                          ? 'Link Has Expired'
-                          : 'Expires in $formattedExpiryDuration',
-                      style: Theme.of(context).textTheme.subtitle1,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            launch(
-                                '$baseServerUrl/${shareLinkData['id']}/images/${widget.encryptionKey}/download/');
-                          },
-                          borderRadius: BorderRadius.circular(15),
-                          splashColor: Colors.amber,
-                          highlightColor: Colors.deepOrange,
-                          child: Container(
-                            height: 50,
-                            width: 160,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Theme.of(context).primaryColor),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      'Download All Files',
-                                      softWrap: true,
-                                      overflow: TextOverflow.fade,
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(color: Colors.white),
-                                    ),
-                                  ),
-                                  const Icon(
-                                    Icons.download,
-                                    size: 28,
-                                    color: Colors.white,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    if (shareLinkData.isNotEmpty)
-                      SharedDocumentDetailsTiles(
-                        documents: shareLinkData['documents'],
-                        encryptionKey: widget.encryptionKey,
-                      )
-                  ],
+                  ),
                 ),
               ),
             ),
