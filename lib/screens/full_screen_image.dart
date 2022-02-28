@@ -29,11 +29,9 @@ class FullScreenImage extends StatelessWidget {
           )
         ]),
         body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 100,
           decoration: BoxDecoration(
             image: DecorationImage(
-              fit: BoxFit.fill,
+              fit: BoxFit.contain,
               image: NetworkImage(
                 '$baseServerUrl/image/$imageId/$encryptionKey',
               ),
