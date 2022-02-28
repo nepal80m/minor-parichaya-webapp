@@ -18,7 +18,9 @@ class HomePage extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
         ),
-        padding: const EdgeInsets.all(50),
+        padding: MediaQuery.of(context).size.width > 800
+            ? const EdgeInsets.all(50)
+            : const EdgeInsets.all(15),
         child: Card(
           elevation: 15,
           shadowColor: Colors.blue,
